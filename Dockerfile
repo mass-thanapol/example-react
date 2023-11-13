@@ -1,26 +1,28 @@
-FROM node:alpine as BUILD_IMAGE
+FROM node:21 as build
 
 WORKDIR /app
-COPY package.json yarn.lock ./
 
-RUN yarn install --frozen-lockfile
+COPY package*.json ./
+
+RUN npm install
+
 COPY . .
 
-RUN yarn build
+RUN npm run build
 
-RUN npm prune --production
+FROM node:21
 
-FROM node:alpine
 WORKDIR /app
 
-COPY --from=BUILD_IMAGE /app/package.json ./package.json
-COPY --from=BUILD_IMAGE /app/node_modules ./node_modules
-COPY --from=BUILD_IMAGE /app/.next ./.next
-COPY --from=BUILD_IMAGE /app/public ./public
+COPY --from=build /app/.next ./.next
 
-EXPOSE 80
-CMD ["yarn", "start"]
+RUN npm install --only=production
+
+EXPOSE 3000
+
+CMD ["npm", "start"]
+
 
 # docker build -t example-react .
-# docker run -d -p 80:80 example-react
+# docker run -d -p 80:3000 example-react
 
