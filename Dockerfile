@@ -1,22 +1,25 @@
-FROM node:21 as build
+FROM node:alpine as BUILD_IMAGE
 
 WORKDIR /app
+COPY package.json yarn.lock ./
 
-COPY package.json ./
-
-RUN npm install
-
+RUN yarn install --frozen-lockfile
 COPY . .
 
-RUN npm run build
+RUN yarn build
 
-FROM nginx:alpine
+RUN npm prune --production
 
-COPY --from=build /app/build /usr/share/nginx/html
+FROM node:alpine
+WORKDIR /app
+
+COPY --from=BUILD_IMAGE /app/package.json ./package.json
+COPY --from=BUILD_IMAGE /app/node_modules ./node_modules
+COPY --from=BUILD_IMAGE /app/.next ./.next
+COPY --from=BUILD_IMAGE /app/public ./public
 
 EXPOSE 80
-
-CMD ["nginx", "-g", "daemon off;"]
+CMD ["yarn", "start"]
 
 # docker build -t example-react .
 # docker run -d -p 80:80 example-react
