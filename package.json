@@ -11,7 +11,10 @@
   "dependencies": {
     "react": "^18",
     "react-dom": "^18",
-    "next": "14.0.2"
+    "next": "14.0.2",
+    "tiny-invariant": "1.1.0-beta.1",
+    "use-debounce": "0.0.9-beta",
+    "web-vitals": "2.0.0-beta.0"
   },
   "devDependencies": {
     "typescript": "^5",
