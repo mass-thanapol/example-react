@@ -14,9 +14,10 @@ export default function RootLayout({
 }: {
   children: React.ReactNode
 }) {
+  const password = 'Qwerty123'
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={inter.className}>{children}-{password}</body>
     </html>
   )
 }
