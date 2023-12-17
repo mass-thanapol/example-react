@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: my-app
-        image: asia-southeast1-docker.pkg.dev/poc-innovation-iot/mass-artifact-registry/example-react:{{TAG}}
+        image: asia-southeast1-docker.pkg.dev/poc-innovation-iot/mass-artifact-registry/example-react:1.0.2
         ports:
         - containerPort: 3000
 apiVersion: v1
